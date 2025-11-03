@@ -1,0 +1,115 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Users {
+  id String @id
+  email String 
+  password String 
+  first_name String 
+  last_name String
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+}
+
+model Projects { 
+  id Int @id @default(autoincrement())
+  name String 
+  description String 
+  status String 
+  priority Priority @default(LOW)
+  start_date DateTime
+  end_date DateTime
+  team_id Int
+  owner_id String 
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Teams {
+  id Int @id @default(autoincrement())
+  team_name String 
+  role String 
+  assosiate_user_id String
+}
+
+model Porject_team_map {
+  id Int @id @default(autoincrement())
+  project_id String 
+  team_id String 
+  updated_at DateTime @default(now())
+}
+
+model Tasks {
+  id Int @id @default(autoincrement())
+  project_id String 
+  assigned_to_id String 
+  assigned_to_first_name String 
+  assigned_to_last_name String 
+  assigned_by_id String 
+  assigned_by_first_name String 
+  assigned_by_last_name String 
+  status String 
+  description String 
+  title String 
+  type String 
+  priority String 
+  due_date DateTime
+  last_updated_by_id String 
+  created_at DateTime @default(now())
+  update_at DateTime 
+}
+
+model Project_owner_custom_task_type {
+  id Int @id @default(autoincrement())
+  project_owner_id String 
+  task_type_name String 
+  task_type_value String 
+}
+
+model Peoject_owner_custom_status {
+  id Int @id @default(autoincrement())
+  project_owner_id String 
+  status_type_name String 
+  status_type_value String 
+
+}
+
+model Task_comments { 
+  id Int @id @default(autoincrement())
+  project_id Int
+  task_id Int 
+  sender_id String 
+  content String 
+  create_at DateTime
+}
+
+model Seen_comments_record { 
+  id Int @id @default(autoincrement())
+  comment_id Int 
+  user_id String 
+
+}
+
+enum Priority {
+  HIGH
+  MEDIUM
+  LOW
+}
+
+
+
+
+
+
