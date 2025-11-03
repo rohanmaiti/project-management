@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 4000;
 
 app.use(
   cors({
-    origin: ["http://localhost:5174", "*"],
+    origin: ["http://localhost:5174", "*", "https://project-management-seven-gamma.vercel.app/"],
     credentials: true,
   })
 );

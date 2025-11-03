@@ -2,6 +2,7 @@ import { clerkClient, requireAuth, getAuth } from "@clerk/express";
 import prisma from "../client.js";
 
 export const protectedRoute = async (req, res, next) => {
+
   const { userId } = getAuth(req);
   if (!userId) {
     return res.status(401).json({ message: "Not authorized, please login to access" });
@@ -11,7 +12,7 @@ export const protectedRoute = async (req, res, next) => {
       id: userId,
     },
   });
-  if (!user) return res.status(401).json({
+  if (!user) return res.status(402).json({
     message: 'unauthorized user, please login to access'
   })
   delete user.password;
