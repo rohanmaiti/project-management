@@ -1,7 +1,10 @@
-import React from 'react'
+import { useAuthStore } from "../../store/useAuthStore.js";
 
 export const useDashboard = () => {
-  return (
-    <div>useDashboard</div>
-  )
-}
+  const { authUser, loading } = useAuthStore();
+
+  return {
+    authUser,
+    loading
+  };
+};
