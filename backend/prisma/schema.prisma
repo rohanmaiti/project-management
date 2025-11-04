@@ -16,7 +16,7 @@ datasource db {
 model Users {
   id String @id
   email String 
-  password String 
+  password String? 
   first_name String 
   last_name String
   created_at DateTime @default(now())

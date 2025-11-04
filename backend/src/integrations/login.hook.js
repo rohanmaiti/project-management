@@ -13,7 +13,6 @@ router.post(
 
       let userObject;
       let createUser;
-
       if (evt?.type === "user.created" && have_all_require_fields(evt)) {
         userObject = {
           id: evt?.data?.id,
@@ -21,7 +20,6 @@ router.post(
             evt?.data?.email_addresses?.[0]?.email_address ||
             evt?.data?.primary_email_address_id ||
             "",
-          password: evt?.data?.password_enabled ? evt?.data?.password : "",
           first_name: evt?.data?.first_name,
           last_name: evt?.data?.last_name,
         };
