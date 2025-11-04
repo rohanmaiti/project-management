@@ -5,7 +5,7 @@ export const protectedRoute = async (req, res, next) => {
 
   const { userId } = getAuth(req);
   if (!userId) {
-    return res.status(401).json({ message: "Not authorized, please login to access" });
+    return res.status(401).json({ message: "no user id in the clerk session" });
   }
   const user = await prisma.users.findUnique({
     where: {
@@ -13,7 +13,7 @@ export const protectedRoute = async (req, res, next) => {
     },
   });
   if (!user) return res.status(402).json({
-    message: 'unauthorized user, please login to access'
+    message: 'no user in the DB, please sync clerk DB to your DB'
   })
   delete user.password;
   req.user = user;

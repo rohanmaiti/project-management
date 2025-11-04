@@ -13,7 +13,12 @@ export const Signup = () => {
           </p>
         </div>
         <div>
-          <SignUp />
+          <SignUp 
+            path="/signup"
+            routing="path"
+            signInUrl="/login"
+            afterSignUpUrl="/dashboard"
+          />
         </div>
       </div>
     </div>

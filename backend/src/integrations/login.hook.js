@@ -13,29 +13,51 @@ router.post(
 
       let userObject;
       let createUser;
-      console.log(evt.type);
-      if (evt?.type === "user.created") {
+
+      if (evt?.type === "user.created" && have_all_require_fields(evt)) {
         userObject = {
           id: evt?.data?.id,
-          email: evt?.data?.email_addresses[0].email_address,
+          email:
+            evt?.data?.email_addresses?.[0]?.email_address ||
+            evt?.data?.primary_email_address_id ||
+            "",
           password: evt?.data?.password_enabled ? evt?.data?.password : "",
           first_name: evt?.data?.first_name,
-          last_name: evt?.data?.last_name,          
+          last_name: evt?.data?.last_name,
         };
         createUser = await prisma.users.create({
           data: userObject,
         });
-      }
 
-      return res.json({
-        message: "Webhook received",
-        data: createUser,
-      });
+        return res.json({
+          message: "Webhook received",
+          data: createUser,
+        });
+      } else {
+        return res.json({
+          message: "Problem in integrating clerk and My DB",
+        });
+      }
     } catch (err) {
       console.error("Error verifying webhook:", err);
       return res.status(400).send("Error verifying webhook");
     }
   }
 );
+
+const have_all_require_fields = (evt) => {
+  try {
+    if (
+      (evt.data.id && evt.data.email_addresses[0].email_address) ||
+      (evt.data.primary_email_address_id &&
+        evt.data.first_name &&
+        evt.data.last_name)
+    )
+      return true;
+    return false;
+  } catch (error) {
+    return false;
+  }
+};
 
 export default router;

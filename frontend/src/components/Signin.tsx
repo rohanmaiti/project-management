@@ -12,7 +12,12 @@ export const Signin = () => {
             Sign in to manage your projects
           </p>
         </div>
-        <SignIn />
+        <SignIn 
+          path="/login"
+          routing="path"
+          signUpUrl="/signup"
+          afterSignInUrl="/dashboard"
+        />
       </div>
     </div>
   );

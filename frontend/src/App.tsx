@@ -13,8 +13,8 @@ function App() {
       <Routes>
         <Route element={<IfNotLogin />}>
           <Route index element={<Landingpage />} />
-          <Route path="/login" element={<Signin />} />
-          <Route path="/signup" element={<Signup />} />
+          <Route path="/login/*" element={<Signin />} />
+          <Route path="/signup/*" element={<Signup />} />
         </Route>
 
         <Route element={<LoggedinLayout/>}>

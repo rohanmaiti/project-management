@@ -1,6 +1,6 @@
 import { ClerkProvider } from "@clerk/react-router";
 import { useThemeContext } from "../theme/useThemeContext";
-import { dark, neobrutalism } from "@clerk/themes";
+import { dark } from "@clerk/themes";
 
 const PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
