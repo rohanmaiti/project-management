@@ -1,9 +1,14 @@
-import { PageHeader } from "../../common/components/PageHeader";
 import { PlusIcon } from "lucide-react";
+import { PageHeader } from "../../common/components/PageHeader";
 import { useDashboard } from "./useDashboard";
+import { DashboardSkeleton } from "./components/DashboardSkeleton";
 
 export const Dashboard = () => {
-  const { authUser } = useDashboard();
+  const { authUser, dashboardLoading } = useDashboard();
+
+  if (dashboardLoading) {
+    return <DashboardSkeleton />;
+  }
 
   return (
     <div className="min-w-full">
