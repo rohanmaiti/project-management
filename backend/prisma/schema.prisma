@@ -40,8 +40,14 @@ model Projects {
 model Teams {
   id Int @id @default(autoincrement())
   team_name String 
-  role String 
-  assosiate_user_id String
+  created_by_id String 
+}
+
+model Team_user_map {
+   id Int @id @default(autoincrement())
+   team_id Int
+   user_id String
+   role Role
 }
 
 model Porject_team_map {
@@ -108,6 +114,15 @@ enum Priority {
   LOW
 }
 
+
+enum Role {
+  DEVELOPER
+  TESTER
+  PRODUCT_MANAGER
+  LEAD
+  DESIGNER
+  RND
+}
 
 
 
