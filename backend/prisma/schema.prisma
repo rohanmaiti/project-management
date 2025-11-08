@@ -21,12 +21,15 @@ model Users {
   last_name String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+
+  // relations 
+  owned_projects Projects[] 
 }
 
 model Projects { 
   id Int @id @default(autoincrement())
   name String 
-  description String 
+  description String?
   status String 
   priority Priority @default(LOW)
   start_date DateTime
@@ -35,12 +38,19 @@ model Projects {
   owner_id String 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  // relations 
+  owner Users @relation(fields: [owner_id], references: [id])
+  associated_team Teams @relation(fields: [team_id], references: [id])
 }
 
 model Teams {
   id Int @id @default(autoincrement())
   team_name String 
   created_by_id String 
+  
+  // relations 
+  associated_project Projects[]
 }
 
 model Team_user_map {
@@ -48,6 +58,9 @@ model Team_user_map {
    team_id Int
    user_id String
    role Role
+
+   // relations 
+   
 }
 
 model Porject_team_map {
