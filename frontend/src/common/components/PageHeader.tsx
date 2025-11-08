@@ -1,5 +1,5 @@
 import type { LucideIcon } from "lucide-react";
-import React from "react";
+
 type PageHeaderProp = {
   title: string;
   description: string;
@@ -29,7 +29,7 @@ export const PageHeader = ({
       </div>
       <div>
         <button
-          // onClick={() => setIsDialogOpen(true)}
+          onClick={onClick}
           className="flex items-center gap-2 px-5 py-2 text-sm rounded bg-gradient-to-br from-blue-500 to-blue-600 text-white space-x-2 hover:opacity-90 transition"
         >
           <Icon size={16} /> {buttonText}

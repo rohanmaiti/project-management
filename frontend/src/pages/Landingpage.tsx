@@ -2,10 +2,10 @@ import { Navbar } from "../components/Navbar";
 import { Footer } from "../components/Footer";
 import { Info } from "../components/Info";
 import { useEffect } from "react";
-import { useAuthStore } from "../store/useAuthStore.js";
+import { useAuthStore } from "../store/useAuthStore.ts";
 
 export const Landingpage = () => {
-  const { me } = useAuthStore();
+  const { me }: any = useAuthStore();
   useEffect(() => {
     me();
   }, []);

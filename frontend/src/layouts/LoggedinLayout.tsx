@@ -4,7 +4,7 @@ import { Loading } from "../components/Loading";
 import { useEffect, useState } from "react";
 import Sidebar from "../components/Sidebar";
 import { Topbar } from "../components/Topbar";
-import { useAuthStore } from "../store/useAuthStore.js";
+import { useAuthStore } from "../store/useAuthStore.ts";
 
 export const LoggedinLayout = () => {
   const { isSignedIn, isLoaded } = useUser();
