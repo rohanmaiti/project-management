@@ -2,21 +2,26 @@ import { create } from "zustand";
 import { axiosInstance } from "../utils/axiosInstance";
 
 export type Authstore = {
-  loading: boolean,
-  dashboardLoading: boolean,
-  authUser: any,
-  me: () => Promise<void>,
-  get_custom_fileds: () => Promise<void>
-}
+  loading: boolean;
+  dashboardLoading: boolean;
+  authUser: any;
+  customFields: any;
+
+  me: () => Promise<void>;
+  get_custom_fileds: () => Promise<void>;
+};
 
 export const useAuthStore = create<Authstore>((set, get) => ({
-  // states 
+  // states
   loading: false,
   dashboardLoading: false,
   authUser: null,
-  
+  customFields: null,
+
   // methods
   me: async () => {
+    const { authUser } = get();
+    if (authUser) return;
     set({ loading: true });
     try {
       const res = await axiosInstance.get("/v1/me");
@@ -29,7 +34,6 @@ export const useAuthStore = create<Authstore>((set, get) => ({
   },
 
   get_custom_fileds: async () => {
-
     set({ dashboardLoading: true });
     try {
       const res = await axiosInstance.get("/v1/get-custom-fields");
