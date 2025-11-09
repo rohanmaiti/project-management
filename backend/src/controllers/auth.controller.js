@@ -1,7 +1,11 @@
 import prisma from "../client.js";
 
 export const me = async (req, res) => {
-  return res.status(200).json(req.user);
+  try {
+    return res.status(200).json(req.user);
+  } catch (error) {
+    return res.status(500).json({ message: error?.message });
+  }
 };
 
 export const get_custom_fileds = async (req, res) => {
@@ -17,9 +21,12 @@ export const get_custom_fileds = async (req, res) => {
           project_owner_id: req.user.id,
         },
       });
-      return res.status(200).json({
-        custom_status: custom_status,
-        custom_task_type: custom_task_type
-      })
-  } catch (error) {}
+    return res.status(200).json({
+      custom_status: custom_status,
+      custom_task_type: custom_task_type,
+    });
+  } catch (error) {
+    console.log("Error fetching custom fields", error?.message);
+    return res.status(500).json({ message: error?.message });
+  }
 };
