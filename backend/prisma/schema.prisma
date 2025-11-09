@@ -14,111 +14,108 @@ datasource db {
 }
 
 model Users {
-  id String @id
-  email String 
-  password String? 
-  first_name String 
-  last_name String
+  id         String   @id
+  email      String
+  password   String?
+  first_name String
+  last_name  String
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
 
   // relations 
-  owned_projects Projects[] 
+  owned_projects Projects[]
 }
 
-model Projects { 
-  id Int @id @default(autoincrement())
-  name String 
+model Projects {
+  id          Int      @id @default(autoincrement())
+  name        String
   description String?
-  status String 
-  priority Priority @default(LOW)
-  start_date DateTime
-  end_date DateTime
-  team_id Int
-  owner_id String 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  status      String
+  priority    Priority @default(LOW)
+  start_date  DateTime
+  end_date    DateTime
+  team_id     Int
+  owner_id    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 
   // relations 
-  owner Users @relation(fields: [owner_id], references: [id])
+  owner           Users @relation(fields: [owner_id], references: [id])
   associated_team Teams @relation(fields: [team_id], references: [id])
 }
 
 model Teams {
-  id Int @id @default(autoincrement())
-  team_name String 
-  created_by_id String 
-  
+  id            Int    @id @default(autoincrement())
+  team_name     String
+  created_by_id String
+
   // relations 
   associated_project Projects[]
 }
 
 model Team_user_map {
-   id Int @id @default(autoincrement())
-   team_id Int
-   user_id String
-   role Role
+  id      Int    @id @default(autoincrement())
+  team_id Int
+  user_id String 
+  role    Role
 
-   // relations 
-   
+  // relations 
 }
 
 model Porject_team_map {
-  id Int @id @default(autoincrement())
-  project_id String 
-  team_id String 
+  id         Int      @id @default(autoincrement())
+  project_id String
+  team_id    String
   updated_at DateTime @default(now())
 }
 
 model Tasks {
-  id Int @id @default(autoincrement())
-  project_id String 
-  assigned_to_id String 
-  assigned_to_first_name String 
-  assigned_to_last_name String 
-  assigned_by_id String 
-  assigned_by_first_name String 
-  assigned_by_last_name String 
-  status String 
-  description String 
-  title String 
-  type String 
-  priority String 
-  due_date DateTime
-  last_updated_by_id String 
-  created_at DateTime @default(now())
-  update_at DateTime 
+  id                     Int      @id @default(autoincrement())
+  project_id             String
+  assigned_to_id         String
+  assigned_to_first_name String
+  assigned_to_last_name  String
+  assigned_by_id         String
+  assigned_by_first_name String
+  assigned_by_last_name  String
+  status                 String
+  description            String
+  title                  String
+  type                   String
+  priority               String
+  due_date               DateTime
+  last_updated_by_id     String
+  created_at             DateTime @default(now())
+  update_at              DateTime
 }
 
 model Project_owner_custom_task_type {
-  id Int @id @default(autoincrement())
-  project_owner_id String 
-  task_type_name String 
-  task_type_value String 
+  id               Int    @id @default(autoincrement())
+  project_owner_id String
+  task_type_name   String
+  task_type_value  String
 }
 
 model Peoject_owner_custom_status {
-  id Int @id @default(autoincrement())
-  project_owner_id String 
-  status_type_name String 
-  status_type_value String 
-
+  id                Int    @id @default(autoincrement())
+  project_owner_id  String
+  status_type_name  String
+  status_type_value String
 }
 
-model Task_comments { 
-  id Int @id @default(autoincrement())
+model Task_comments {
+  id         Int      @id @default(autoincrement())
   project_id Int
-  task_id Int 
-  sender_id String 
-  content String 
-  create_at DateTime
+  task_id    Int
+  sender_id  String
+  content    String
+  create_at  DateTime
 }
 
-model Seen_comments_record { 
-  id Int @id @default(autoincrement())
-  comment_id Int 
-  user_id String 
-
+model Seen_comments_record {
+  id         Int    @id @default(autoincrement())
+  comment_id Int
+  user_id    String
 }
 
 enum Priority {
@@ -126,7 +123,6 @@ enum Priority {
   MEDIUM
   LOW
 }
-
 
 enum Role {
   DEVELOPER
@@ -136,8 +132,3 @@ enum Role {
   DESIGNER
   RND
 }
-
-
-
-
-

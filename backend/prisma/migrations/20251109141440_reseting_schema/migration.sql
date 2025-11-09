@@ -1,13 +1,18 @@
 -- CreateEnum
 CREATE TYPE "Priority" AS ENUM ('HIGH', 'MEDIUM', 'LOW');
 
+-- CreateEnum
+CREATE TYPE "Role" AS ENUM ('DEVELOPER', 'TESTER', 'PRODUCT_MANAGER', 'LEAD', 'DESIGNER', 'RND');
+
 -- CreateTable
 CREATE TABLE "Users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
-    "password" TEXT NOT NULL,
+    "password" TEXT,
     "first_name" TEXT NOT NULL,
     "last_name" TEXT NOT NULL,
+    "created_at" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updated_at" TIMESTAMP(3) NOT NULL,
 
     CONSTRAINT "Users_pkey" PRIMARY KEY ("id")
 );
@@ -16,7 +21,7 @@ CREATE TABLE "Users" (
 CREATE TABLE "Projects" (
     "id" SERIAL NOT NULL,
     "name" TEXT NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "status" TEXT NOT NULL,
     "priority" "Priority" NOT NULL DEFAULT 'LOW',
     "start_date" TIMESTAMP(3) NOT NULL,
@@ -33,10 +38,19 @@ CREATE TABLE "Projects" (
 CREATE TABLE "Teams" (
     "id" SERIAL NOT NULL,
     "team_name" TEXT NOT NULL,
-    "role" TEXT NOT NULL,
-    "assosiate_user_id" TEXT NOT NULL,
+    "created_by_id" TEXT NOT NULL,
 
     CONSTRAINT "Teams_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "Team_user_map" (
+    "id" SERIAL NOT NULL,
+    "team_id" INTEGER NOT NULL,
+    "user_id" TEXT NOT NULL,
+    "role" "Role" NOT NULL,
+
+    CONSTRAINT "Team_user_map_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateTable
@@ -112,3 +126,9 @@ CREATE TABLE "Seen_comments_record" (
 
     CONSTRAINT "Seen_comments_record_pkey" PRIMARY KEY ("id")
 );
+
+-- AddForeignKey
+ALTER TABLE "Projects" ADD CONSTRAINT "Projects_owner_id_fkey" FOREIGN KEY ("owner_id") REFERENCES "Users"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "Projects" ADD CONSTRAINT "Projects_team_id_fkey" FOREIGN KEY ("team_id") REFERENCES "Teams"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
