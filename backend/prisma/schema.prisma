@@ -23,14 +23,22 @@ model Users {
   updated_at DateTime @updatedAt
 
   // relations 
-  owned_projects Projects[]
+  teams Teams[] // one user can have multiple teams 
+  projects Projects[] // one user can have multiple projects
+  teamUserMap Team_user_map[] // one user can be part of multiple teams 
+  taskAssignedTo Tasks[] @relation("taskAssignedTo")// one user can have multiple tasks 
+  taskAssignedBy Tasks[] @relation("taskAssignedBy") // one user can assign multiple tasks 
+  lastUpdatedBy Tasks[] @relation("lastUpdatedBy") 
+  ProjectOwnerCustomTaskType Project_owner_custom_status[] // one project owner can have multiple custom status 
+  ProjectOwnerTaskType Project_owner_custom_task_type[] // one project owner can have multiple task type 
+  senderId Task_comments[] // one user can have multiple comments 
 }
 
 model Projects {
   id          Int      @id @default(autoincrement())
   name        String
   description String?
-  status      String
+  status      Project_status
   priority    Priority @default(LOW)
   start_date  DateTime
   end_date    DateTime
@@ -40,17 +48,21 @@ model Projects {
   updatedAt   DateTime @updatedAt
 
   // relations 
-  owner           Users @relation(fields: [owner_id], references: [id])
-  associated_team Teams @relation(fields: [team_id], references: [id])
+  ownerId Users @relation(fields: [owner_id], references: [id])
+  ProjectTeamMap Porject_team_map? // each project should have only one team associated with
+  taskId Tasks[]  // one project can have multiple tasks
+  taskComments Task_comments[] // one project will have multiple task comments
 }
 
 model Teams {
   id            Int    @id @default(autoincrement())
   team_name     String
   created_by_id String
-
-  // relations 
-  associated_project Projects[]
+  
+  // realtions 
+  createdById Users @relation(fields: [created_by_id], references: [id])
+  projectTeamMap Porject_team_map[] // one team can be associated with multiple projects 
+  teamUserMap Team_user_map[] //  one team can have different users 
 }
 
 model Team_user_map {
@@ -60,33 +72,48 @@ model Team_user_map {
   role    Role
 
   // relations 
+  teamId Teams @relation(fields: [team_id], references: [id])
+  userId Users @relation(fields: [user_id], references: [id])
+
 }
 
 model Porject_team_map {
   id         Int      @id @default(autoincrement())
-  project_id String
-  team_id    String
+  project_id Int @unique
+  team_id    Int
   updated_at DateTime @default(now())
+
+  // relations 
+  teamId Teams @relation(fields: [team_id], references: [id])
+  projectId Projects @relation(fields: [project_id], references: [id])
+
 }
 
 model Tasks {
   id                     Int      @id @default(autoincrement())
-  project_id             String
+  project_id             Int
   assigned_to_id         String
   assigned_to_first_name String
   assigned_to_last_name  String
   assigned_by_id         String
   assigned_by_first_name String
   assigned_by_last_name  String
-  status                 String
-  description            String
+  status                 Task_status
   title                  String
+  description            String
   type                   String
-  priority               String
+  priority               Task_priority
   due_date               DateTime
   last_updated_by_id     String
   created_at             DateTime @default(now())
   update_at              DateTime
+
+  // relations 
+  projectId Projects @relation(fields: [project_id], references: [id])
+  assignedToUser Users @relation(name: "taskAssignedTo", fields: [assigned_to_id], references: [id])
+  assignedByUser Users @relation(name: "taskAssignedBy", fields: [assigned_by_id], references: [id])
+  lastUpdatedById Users @relation(name: "lastUpdatedBy", fields: [last_updated_by_id], references: [id])
+  taskComments Task_comments[] // one task can have multiple comments 
 }
 
 model Project_owner_custom_task_type {
@@ -94,13 +121,19 @@ model Project_owner_custom_task_type {
   project_owner_id String
   task_type_name   String
   task_type_value  String
+
+  // relations 
+  onwerId Users @relation(fields: [project_owner_id], references: [id])
 }
 
-model Peoject_owner_custom_status {
+model Project_owner_custom_status {
   id                Int    @id @default(autoincrement())
   project_owner_id  String
   status_type_name  String
   status_type_value String
+
+  // relations 
+  projectOwerId Users @relation(fields: [project_owner_id], references: [id])
 }
 
 model Task_comments {
@@ -110,12 +143,46 @@ model Task_comments {
   sender_id  String
   content    String
   create_at  DateTime
+
+  projectId Projects @relation(fields: [project_id], references: [id])
+  taskId Tasks @relation(fields: [task_id], references: [id])
+  senderId Users @relation(fields: [sender_id], references: [id])
 }
 
 model Seen_comments_record {
   id         Int    @id @default(autoincrement())
   comment_id Int
   user_id    String
+}
+
+enum Project_status {
+  ACTIVE 
+  PLANNING 
+  COMPLETED 
+  ON_HOLD
+  CANCELLED
+}
+
+enum Task_status { 
+  TODO
+  IN_DEV
+  IN_TEST
+  REOPEN
+  INVALID
+  NOT_ABLE_TO_REPLICATE
+}
+
+enum Task_type { 
+  BUG
+  FEATURE
+  IMPROVEMENT 
+  OTHER 
+}
+
+enum Task_priority { 
+  LOW
+  MEDIUM
+  HIGH
 }
 
 enum Priority {
