@@ -2,7 +2,7 @@ import { PlusIcon } from "lucide-react";
 import { PageHeader } from "../../common/components/PageHeader";
 import { useDashboard } from "./useDashboard";
 import { DashboardSkeleton } from "./components/DashboardSkeleton";
-import CreateProjectDialog from "./components/CreateProjectDialog";
+import CreateProjectDialog from "../../common/components/CreateProjectDialog";
 import { useEffect } from "react";
 import { useAuthStore, type Authstore } from "../../store/useAuthStore";
 import StatsGrid from "./components/StatsGrid";
@@ -26,6 +26,7 @@ export const Dashboard = () => {
 
   useEffect(() => {
     get_custom_fileds();
+    
   }, []);
 
   return (

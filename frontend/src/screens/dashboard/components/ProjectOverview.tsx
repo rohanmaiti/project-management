@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, Calendar, UsersIcon, FolderOpen } from "lucide-react";
 import { format } from "date-fns";
-import CreateProjectDialog from "./CreateProjectDialog";
+import CreateProjectDialog from "../../../common/components/CreateProjectDialog";
 
 const ProjectOverview = ({
   isDialogOpen,
