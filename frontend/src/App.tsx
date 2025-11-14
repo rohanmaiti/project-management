@@ -20,6 +20,7 @@ function App() {
         <Route element={<LoggedinLayout/>}>
            <Route path="/dashboard"  element={<Dashboard/>} />
            <Route path="/projects" element={<h1> projects </h1>} />
+           <Route path="/teams" element={<h1> Teams </h1>} />
         </Route>
       </Routes>
 
