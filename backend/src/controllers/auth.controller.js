@@ -10,7 +10,7 @@ export const me = async (req, res) => {
 
 export const get_custom_fileds = async (req, res) => {
   try {
-    const custom_status = await prisma.peoject_owner_custom_status.findMany({
+    const custom_status = await prisma.project_owner_custom_status.findMany({
       where: {
         project_owner_id: req.user.id,
       },
