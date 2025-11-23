@@ -2,7 +2,27 @@ import prisma from "../client.js";
 
 export const me = async (req, res) => {
   try {
-    return res.status(200).json(req.user);
+    const projects = await prisma.projects.findMany({
+      where: {
+        ProjectTeamMap: {
+          teamId: {
+            teamUserMap: {
+              some: {
+                user_id: req.user_id,
+              },
+            },
+          },
+        },
+      },
+    });
+
+    const total_completed_projects = projects.filter((p) => p.status === 'COMPLETED');
+    const response = {
+      total_projects: projects.length,
+      total_completed_projects: total_completed_projects.length,
+      ...req.user,
+    };
+    return res.status(200).json(response);
   } catch (error) {
     return res.status(500).json({ message: error?.message });
   }
